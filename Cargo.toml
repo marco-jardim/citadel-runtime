@@ -1,5 +1,5 @@
 [package]
-name = "citadel-runtime"
+name = "citadel"
 description = "Bitcoin, LN & RGB wallet runtime"
 version = "0.1.0"
 license = "MIT"
