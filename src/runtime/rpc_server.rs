@@ -32,7 +32,7 @@ use crate::Error;
 
 impl Runtime {
     pub(super) fn rpc_process(&mut self, raw: Vec<u8>) -> Result<Reply, Reply> {
-        trace!(
+        debug!(
             "Got {} bytes over ZMQ RPC: {}",
             raw.len(),
             raw.to_bech32data()
@@ -192,7 +192,7 @@ impl Runtime {
                     .and_then(|_| miniscript::psbt::extract(&psbt, &wallet::SECP256K1)) {
                     Ok(tx) => {
                         // TODO: Update saved PSBT
-                        trace!("Finalized PSBT: {:#?}", psbt);
+                        debug!("Finalized PSBT: {:#?}", psbt);
 
                         debug!(
                             "Connecting electrum server at {} ...",
@@ -203,7 +203,7 @@ impl Runtime {
                             ElectrumClient::new(&self.config.electrum_server.to_string()).map_err(Error::from)?;
 
                         debug!("Publishing transaction to bitcoin network via Electrum server");
-                        trace!("{:#?}", tx);
+                        debug!("{:#?}", tx);
                         electrum
                             .transaction_broadcast(&tx)
                             .map(|_| Reply::Success)
