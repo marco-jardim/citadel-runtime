@@ -52,7 +52,7 @@ pub struct Client {
 impl Client {
     pub fn with(config: Config) -> Result<Self, Error> {
         debug!("Initializing runtime");
-        trace!("Connecting to citadel daemon at {}", config.rpc_endpoint);
+        debug!("Connecting to citadel daemon at {}", config.rpc_endpoint);
         let session_rpc = session::Raw::with_zmq_unencrypted(
             ZmqType::Req,
             &config.rpc_endpoint,
@@ -67,15 +67,15 @@ impl Client {
     }
 
     pub fn request(&mut self, request: Request) -> Result<Reply, Error> {
-        trace!("Sending request to the server: {:?}", request);
+        debug!("Sending request to the server: {:?}", request);
         let data = request.serialize();
-        trace!("Raw request data ({} bytes): {:02X?}", data.len(), data);
+        debug!("Raw request data ({} bytes): {:02X?}", data.len(), data);
         self.session_rpc.send_raw_message(&data)?;
-        trace!("Awaiting reply");
+        debug!("Awaiting reply");
         let raw = self.session_rpc.recv_raw_message()?;
-        trace!("Got reply ({} bytes), parsing: {:02X?}", raw.len(), raw);
+        debug!("Got reply ({} bytes), parsing: {:02X?}", raw.len(), raw);
         let reply = self.unmarshaller.unmarshall(&raw)?;
-        trace!("Reply: {:?}", reply);
+        debug!("Reply: {:?}", reply);
         Ok((&*reply).clone())
     }
 }
@@ -247,10 +247,10 @@ impl Client {
             "Doing transfer for invoice {} using wallet {} with fee {}",
             invoice, contract_id, fee
         );
-        trace!("Parsed invoice: {:#?}", invoice);
+        debug!("Parsed invoice: {:#?}", invoice);
 
         let transfer_info = if let Some(asset_id) = invoice.rgb_asset() {
-            trace!("Performing transfer in {} assets", asset_id);
+            debug!("Performing transfer in {} assets", asset_id);
             message::TransferInfo::Rgb {
                 contract_id: asset_id,
                 receiver: match invoice.beneficiary() {
