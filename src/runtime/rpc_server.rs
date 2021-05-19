@@ -35,7 +35,8 @@ impl Runtime {
         debug!(
             "Got {} bytes over ZMQ RPC: {}",
             raw.len(),
-            raw.to_bech32data()
+            raw.to_bech32data(),
+            raw
         );
         let message = (&*self.unmarshaller.unmarshall(&raw)?).clone();
         debug!(
