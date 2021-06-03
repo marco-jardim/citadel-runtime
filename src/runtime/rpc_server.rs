@@ -33,7 +33,7 @@ use crate::Error;
 impl Runtime {
     pub(super) fn rpc_process(&mut self, raw: Vec<u8>) -> Result<Reply, Reply> {
         debug!(
-            "Got {} bytes over ZMQ RPC: {}, RAW: {}",
+            "Got {} bytes over ZMQ RPC: {}, RAW: {:?}",
             raw.len(),
             raw.to_bech32data(),
             raw
